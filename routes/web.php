@@ -1,5 +1,5 @@
 <?php
-use App\Controllers\{AdminController,AppointmentController,AuthController,DashboardController,HomeController,NotificationController,ProfileController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
+use App\Controllers\{AdminAiController,AdminController,AiController,AppointmentController,AuthController,DashboardController,HomeController,NotificationController,ProfileController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
 $router->get('/',[HomeController::class,'index']);
 $router->get('/about',[PublicController::class,'about']);
 $router->get('/leadership',[PublicController::class,'leadership']);
@@ -16,6 +16,8 @@ $router->get('/patient-stories',[PublicController::class,'videos']);
 $router->get('/contact',[PublicController::class,'contact']);
 $router->post('/contact',[PublicController::class,'sendContact']);
 $router->post('/feedback',[PublicController::class,'sendFeedback']);
+$router->get('/ai-assistant',[AiController::class,'chat']);
+$router->post('/ai-assistant/message',[AiController::class,'respond']);
 $router->get('/login',[AuthController::class,'loginForm'],[GuestMiddleware::class]);
 $router->post('/login',[AuthController::class,'login'],[GuestMiddleware::class]);
 $router->get('/register',[AuthController::class,'registerForm'],[GuestMiddleware::class]);
@@ -52,3 +54,9 @@ $router->get('/admin/roles',[AdminController::class,'roles'],[AdminMiddleware::c
 $router->post('/admin/roles',[AdminController::class,'saveRole'],[AdminMiddleware::class]);
 $router->post('/admin/role-create',[AdminController::class,'createRole'],[AdminMiddleware::class]);
 $router->get('/admin/audits',[AdminController::class,'audits'],[AdminMiddleware::class]);
+$router->get('/admin/ai-knowledge',[AdminAiController::class,'knowledge'],[AdminMiddleware::class]);
+$router->post('/admin/ai-knowledge',[AdminAiController::class,'saveKnowledge'],[AdminMiddleware::class]);
+$router->get('/admin/ai-symptoms',[AdminAiController::class,'symptoms'],[AdminMiddleware::class]);
+$router->post('/admin/ai-symptoms',[AdminAiController::class,'saveSymptom'],[AdminMiddleware::class]);
+$router->get('/admin/ai-unanswered',[AdminAiController::class,'unanswered'],[AdminMiddleware::class]);
+$router->post('/admin/ai-unanswered',[AdminAiController::class,'resolve'],[AdminMiddleware::class]);

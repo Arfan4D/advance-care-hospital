@@ -1,4 +1,4 @@
-# Advance Care Specialized Hospital — Phases 1–4
+# Advance Care Specialized Hospital — Phases 1–5
 
 ## Setup with XAMPP
 
@@ -7,7 +7,7 @@
 3. In `.env`, use `DB_PORT=3307` if your MySQL runs on 3307; otherwise use 3306.
 4. Start Apache and MySQL in XAMPP.
 5. Open phpMyAdmin and import `database/schema.sql` first.
-6. Import `database/phase2_migration.sql`, `database/phase3_migration.sql`, then `database/phase4_migration.sql`.
+6. Import `database/phase2_migration.sql`, `database/phase3_migration.sql`, `database/phase4_migration.sql`, then `database/phase5_migration.sql`.
 7. Open a terminal in the project folder and run:
 
    `C:\xampp\php\php.exe database\create_admin.php admin@advancecare.com StrongPassword123!`
@@ -67,6 +67,30 @@ Account verification is disabled for local XAMPP development because no SMTP ema
 If Phases 1–3 are already installed, import only `database/phase4_migration.sql`.
 
 Open the admin panel at `/admin`. Existing administrators automatically receive all newly added Phase 4 permissions.
+
+## Phase 5 AI integration
+
+- Responsive AI chat interface for guests and patients
+- Rule-based bilingual English/Bangla responses
+- FAQ knowledge base
+- Symptom keyword management
+- Emergency-keyword detection before ordinary recommendations
+- Symptom-to-department navigation rules
+- Department and doctor recommendation cards
+- Doctor visiting-hour answers
+- Hospital policy, diagnostics, cabin and appointment answers
+- Login-aware appointment-booking actions
+- Conversation and message history
+- Unanswered-question collection and occurrence counts
+- Admin AI knowledge editor
+- Admin symptom and recommendation-rule editor
+- Admin unanswered-query review workflow
+
+The assistant is intentionally limited to hospital information and navigation. It does not diagnose conditions, recommend medication, interpret results, or replace professional care.
+
+If Phases 1–4 are already installed, import only `database/phase5_migration.sql`.
+
+Open the assistant at `/ai-assistant`. Manage it using `/admin/ai-knowledge`, `/admin/ai-symptoms`, and `/admin/ai-unanswered`.
 
 ## Upgrade an existing Phase 2 database
 
