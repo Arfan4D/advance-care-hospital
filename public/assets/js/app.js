@@ -1,3 +1,4 @@
 document.querySelector('.menu')?.addEventListener('click',()=>document.querySelector('header nav')?.classList.toggle('open'));
 document.querySelector('.ai')?.addEventListener('click',()=>alert('The AI Healthcare Assistant will be developed after the appointment data is ready.'));
 document.querySelectorAll('.form-tabs button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.form-tabs button').forEach(b=>b.classList.remove('active'));button.classList.add('active');document.querySelectorAll('.hospital-form').forEach(form=>form.classList.add('hidden'));document.getElementById(button.dataset.form)?.classList.remove('hidden');}));
+const cancelDialog=document.getElementById('cancel-dialog');document.querySelector('[data-open-cancel]')?.addEventListener('click',()=>cancelDialog?.showModal());document.querySelector('[data-close-cancel]')?.addEventListener('click',()=>cancelDialog?.close());

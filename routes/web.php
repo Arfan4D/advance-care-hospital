@@ -1,5 +1,5 @@
 <?php
-use App\Controllers\{AuthController,DashboardController,HomeController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
+use App\Controllers\{AppointmentController,AuthController,DashboardController,HomeController,NotificationController,ProfileController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
 $router->get('/',[HomeController::class,'index']);
 $router->get('/about',[PublicController::class,'about']);
 $router->get('/leadership',[PublicController::class,'leadership']);
@@ -22,4 +22,16 @@ $router->get('/register',[AuthController::class,'registerForm'],[GuestMiddleware
 $router->post('/register',[AuthController::class,'register'],[GuestMiddleware::class]);
 $router->post('/logout',[AuthController::class,'logout'],[AuthMiddleware::class]);
 $router->get('/dashboard',[DashboardController::class,'patient'],[AuthMiddleware::class]);
+$router->get('/profile',[ProfileController::class,'edit'],[AuthMiddleware::class]);
+$router->post('/profile',[ProfileController::class,'update'],[AuthMiddleware::class]);
+$router->get('/book-appointment',[AppointmentController::class,'create'],[AuthMiddleware::class]);
+$router->post('/book-appointment',[AppointmentController::class,'store'],[AuthMiddleware::class]);
+$router->get('/appointment',[AppointmentController::class,'show'],[AuthMiddleware::class]);
+$router->get('/appointments',[AppointmentController::class,'index'],[AuthMiddleware::class]);
+$router->post('/appointment/cancel',[AppointmentController::class,'cancel'],[AuthMiddleware::class]);
+$router->get('/appointment/reschedule',[AppointmentController::class,'rescheduleForm'],[AuthMiddleware::class]);
+$router->post('/appointment/reschedule',[AppointmentController::class,'reschedule'],[AuthMiddleware::class]);
+$router->get('/notifications',[NotificationController::class,'index'],[AuthMiddleware::class]);
+$router->post('/notification/read',[NotificationController::class,'read'],[AuthMiddleware::class]);
+$router->post('/notifications/read-all',[NotificationController::class,'readAll'],[AuthMiddleware::class]);
 $router->get('/admin',[DashboardController::class,'admin'],[AdminMiddleware::class]);
