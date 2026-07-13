@@ -1,3 +1,2 @@
 <?php
-namespace App\Controllers;use App\Core\{Request,View};final class HomeController{public function index(Request$r):void{View::render('home',['title'=>'Home']);}}
-
+namespace App\Controllers;use App\Core\{Request,View};use App\Models\Hospital;final class HomeController{public function index(Request$r):void{View::render('home',['title'=>'Home','departments'=>array_slice(Hospital::all('departments','is_active=1',[],'is_featured DESC,name'),0,6),'doctors'=>array_slice(Hospital::doctors(),0,4),'facilities'=>array_slice(Hospital::all('facilities','is_active=1',[],'is_featured DESC,name'),0,4),'videos'=>array_slice(Hospital::videoReviews(),0,3),'news'=>array_slice(Hospital::all('news','is_published=1',[],'published_at DESC'),0,3)]);}}

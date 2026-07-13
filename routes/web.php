@@ -1,6 +1,21 @@
 <?php
-use App\Controllers\{AuthController,DashboardController,HomeController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
+use App\Controllers\{AuthController,DashboardController,HomeController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
 $router->get('/',[HomeController::class,'index']);
+$router->get('/about',[PublicController::class,'about']);
+$router->get('/leadership',[PublicController::class,'leadership']);
+$router->get('/departments',[PublicController::class,'departments']);
+$router->get('/department',[PublicController::class,'department']);
+$router->get('/doctors',[PublicController::class,'doctors']);
+$router->get('/doctor',[PublicController::class,'doctor']);
+$router->get('/diagnostics',[PublicController::class,'diagnostics']);
+$router->get('/facilities',[PublicController::class,'facilities']);
+$router->get('/cabins',[PublicController::class,'cabins']);
+$router->get('/news',[PublicController::class,'news']);
+$router->get('/article',[PublicController::class,'article']);
+$router->get('/patient-stories',[PublicController::class,'videos']);
+$router->get('/contact',[PublicController::class,'contact']);
+$router->post('/contact',[PublicController::class,'sendContact']);
+$router->post('/feedback',[PublicController::class,'sendFeedback']);
 $router->get('/login',[AuthController::class,'loginForm'],[GuestMiddleware::class]);
 $router->post('/login',[AuthController::class,'login'],[GuestMiddleware::class]);
 $router->get('/register',[AuthController::class,'registerForm'],[GuestMiddleware::class]);
@@ -8,4 +23,3 @@ $router->post('/register',[AuthController::class,'register'],[GuestMiddleware::c
 $router->post('/logout',[AuthController::class,'logout'],[AuthMiddleware::class]);
 $router->get('/dashboard',[DashboardController::class,'patient'],[AuthMiddleware::class]);
 $router->get('/admin',[DashboardController::class,'admin'],[AdminMiddleware::class]);
-

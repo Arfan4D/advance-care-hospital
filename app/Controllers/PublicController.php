@@ -1,0 +1,21 @@
+<?php
+namespace App\Controllers;
+use App\Core\{Request,Response,Session,Validator,View};use App\Models\Hospital;
+
+final class PublicController{
+ public function about(Request$r):void{$page=Hospital::one('pages','slug','about');View::render('public/page',['title'=>'About Hospital','page'=>$page]);}
+ public function leadership(Request$r):void{$type=(string)$r->input('type','board');$allowed=['chairman','managing_director','board','administration'];if(!in_array($type,$allowed,true))Response::abort(404);$leaders=Hospital::all('leaders','category=? AND is_active=1',[$type],'display_order,name');$titles=['chairman'=>"Chairman’s Message",'managing_director'=>"Managing Director’s Message",'board'=>'Board of Directors','administration'=>'Administration'];View::render('public/leadership',['title'=>$titles[$type],'leaders'=>$leaders,'type'=>$type]);}
+ public function departments(Request$r):void{View::render('public/departments',['title'=>'Medical Departments','departments'=>Hospital::all('departments','is_active=1',[],'is_featured DESC,name')]);}
+ public function department(Request$r):void{$d=Hospital::one('departments','id',(int)$r->input('id'));if(!$d)Response::abort(404);View::render('public/department',['title'=>$d['name'],'department'=>$d,'doctors'=>Hospital::departmentDoctors((int)$d['id'])]);}
+ public function doctors(Request$r):void{$q=trim((string)$r->input('q',''));$dept=(int)$r->input('department',0);View::render('public/doctors',['title'=>'Find a Doctor','doctors'=>Hospital::doctors($q,$dept?:null),'departments'=>Hospital::all('departments','is_active=1',[],'name'),'q'=>$q,'selectedDepartment'=>$dept]);}
+ public function doctor(Request$r):void{$d=Hospital::one('doctors','id',(int)$r->input('id'));if(!$d)Response::abort(404);View::render('public/doctor',['title'=>$d['name'],'doctor'=>$d]);}
+ public function diagnostics(Request$r):void{$category=(int)$r->input('category',0);$q=trim((string)$r->input('q',''));View::render('public/diagnostics',['title'=>'Diagnostic Services','tests'=>Hospital::diagnostics($category?:null,$q?:null),'categories'=>Hospital::all('diagnostic_categories','is_active=1',[],'name'),'q'=>$q,'selectedCategory'=>$category]);}
+ public function facilities(Request$r):void{View::render('public/facilities',['title'=>'Healthcare Facilities','facilities'=>Hospital::all('facilities','is_active=1',[],'is_featured DESC,name')]);}
+ public function cabins(Request$r):void{View::render('public/cabins',['title'=>'Cabins and Rooms','cabins'=>Hospital::all('cabin_types','is_active=1',[],'daily_charge DESC')]);}
+ public function news(Request$r):void{View::render('public/news',['title'=>'Hospital News','articles'=>Hospital::all('news','is_published=1',[],'published_at DESC')]);}
+ public function article(Request$r):void{$a=Hospital::one('news','id',(int)$r->input('id'));if(!$a)Response::abort(404);View::render('public/article',['title'=>$a['title'],'article'=>$a]);}
+ public function videos(Request$r):void{View::render('public/videos',['title'=>'Patient Stories','videos'=>Hospital::videoReviews()]);}
+ public function contact(Request$r):void{View::render('public/contact',['title'=>'Contact and Feedback','errors'=>[],'old'=>[]]);}
+ public function sendContact(Request$r):void{$d=$r->all();$v=new Validator();if(!$v->validate($d,['name'=>'required|min:2','phone'=>'required|min:7','subject'=>'required|min:3','message'=>'required|min:10'])){View::render('public/contact',['title'=>'Contact and Feedback','errors'=>$v->errors(),'old'=>$d]);return;}Hospital::createContact($d);Session::flash('success','Your message has been received. Our team will contact you.');redirect('contact');}
+ public function sendFeedback(Request$r):void{$d=$r->all();$v=new Validator();if(!$v->validate($d,['rating'=>'required','comments'=>'required|min:10'])){View::render('public/contact',['title'=>'Contact and Feedback','errors'=>$v->errors(),'old'=>$d]);return;}if((int)$d['rating']<1||(int)$d['rating']>5){View::render('public/contact',['title'=>'Contact and Feedback','errors'=>['rating'=>['Choose a rating from 1 to 5.']],'old'=>$d]);return;}Hospital::createFeedback($d);Session::flash('success','Thank you. Your feedback was submitted for review.');redirect('contact');}
+}

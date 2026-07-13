@@ -1,0 +1,2 @@
+<?php $heading='Healthcare Facilities';$subheading='Modern support services designed around safety and patient needs.';require __DIR__.'/_hero.php';?><section class="section"><div class="facility-grid listing"><?php foreach($facilities as$f):?><article><i><?=e($f['icon'])?></i><span><?=e($f['availability'])?></span><h3><?=e($f['name'])?></h3><p><?=e($f['description'])?></p><b>Contact: <?=e($f['contact'])?></b></article><?php endforeach;?></div></section>
+
