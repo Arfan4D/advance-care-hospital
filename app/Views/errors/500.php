@@ -1,0 +1,1 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="<?=asset('css/app.css')?>"></head><body><section class="error"><b>500</b><h1>Something went wrong.</h1><p><?=e($message??'Please try again.')?></p><a class="btn" href="<?=url()?>">Return Home</a></section></body></html>

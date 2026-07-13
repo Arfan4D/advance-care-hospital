@@ -1,0 +1,14 @@
+CREATE DATABASE IF NOT EXISTS advance_care_hospital CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE advance_care_hospital;
+CREATE TABLE users(id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,name VARCHAR(120) NOT NULL,email VARCHAR(190) NOT NULL UNIQUE,phone VARCHAR(20) NULL UNIQUE,password VARCHAR(255) NOT NULL,is_active BOOLEAN NOT NULL DEFAULT TRUE,email_verified_at TIMESTAMP NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)ENGINE=InnoDB;
+CREATE TABLE roles(id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,name VARCHAR(50) NOT NULL UNIQUE,label VARCHAR(80) NOT NULL)ENGINE=InnoDB;
+CREATE TABLE permissions(id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100) NOT NULL UNIQUE,label VARCHAR(120) NOT NULL)ENGINE=InnoDB;
+CREATE TABLE user_roles(user_id BIGINT UNSIGNED NOT NULL,role_id SMALLINT UNSIGNED NOT NULL,PRIMARY KEY(user_id,role_id),FOREIGN KEY(user_id)REFERENCES users(id)ON DELETE CASCADE,FOREIGN KEY(role_id)REFERENCES roles(id)ON DELETE CASCADE)ENGINE=InnoDB;
+CREATE TABLE role_permissions(role_id SMALLINT UNSIGNED NOT NULL,permission_id SMALLINT UNSIGNED NOT NULL,PRIMARY KEY(role_id,permission_id),FOREIGN KEY(role_id)REFERENCES roles(id)ON DELETE CASCADE,FOREIGN KEY(permission_id)REFERENCES permissions(id)ON DELETE CASCADE)ENGINE=InnoDB;
+CREATE TABLE password_reset_tokens(email VARCHAR(190)PRIMARY KEY,token VARCHAR(255)NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)ENGINE=InnoDB;
+CREATE TABLE login_attempts(id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,email VARCHAR(190),ip_address VARCHAR(45)NOT NULL,successful BOOLEAN DEFAULT FALSE,attempted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)ENGINE=InnoDB;
+CREATE TABLE audit_logs(id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,user_id BIGINT UNSIGNED NULL,action VARCHAR(100)NOT NULL,entity_type VARCHAR(100),entity_id BIGINT UNSIGNED,metadata JSON,ip_address VARCHAR(45),created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id)REFERENCES users(id)ON DELETE SET NULL)ENGINE=InnoDB;
+INSERT INTO roles(name,label)VALUES('admin','Administrator'),('patient','Registered Patient'),('editor','Content Editor');
+INSERT INTO permissions(name,label)VALUES('dashboard.view','View dashboard'),('users.manage','Manage users'),('content.manage','Manage content'),('appointments.manage','Manage appointments'),('appointments.own','Manage own appointments');
+INSERT INTO role_permissions SELECT r.id,p.id FROM roles r CROSS JOIN permissions p WHERE r.name='admin';
+INSERT INTO role_permissions SELECT r.id,p.id FROM roles r JOIN permissions p ON p.name IN('dashboard.view','appointments.own')WHERE r.name='patient';

@@ -1,0 +1,1 @@
+<?php $title='Session Expired';$content='<section class="error"><b>419</b><h1>Your secure session expired.</h1><a class="btn" href="'.url().'">Return Home</a></section>';require BASE_PATH.'/app/Views/layouts/main.php';?>

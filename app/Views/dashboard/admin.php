@@ -1,0 +1,2 @@
+<section class="dashboard"><aside><h3>Administration</h3><a>Overview</a><a>Doctors</a><a>Departments</a><a>Appointments</a><a>Patients</a></aside><div><span class="eyebrow">ADMIN DASHBOARD</span><h1>Welcome, <?=e($user['name'])?></h1><div class="dashcards"><article><span>Appointments</span><h2>0</h2></article><article><span>Patients</span><h2>1</h2></article><article><span>System</span><h2>Healthy</h2></article></div></div></section>
+

@@ -1,0 +1,2 @@
+<section class="dashboard"><aside><h3>Patient Portal</h3><a>Overview</a><a>Appointments</a><a>Profile</a></aside><div><span class="eyebrow">PATIENT DASHBOARD</span><h1>Welcome, <?=e($user['name'])?></h1><div class="dashcards"><article><h3>No upcoming appointment</h3><button class="btn">Book Appointment</button></article><article><h3>Find a specialist</h3><button class="btn outline">Find Doctor</button></article><article><h3>AI hospital guidance</h3><button class="btn purple">Start Chat</button></article></div></div></section>
+

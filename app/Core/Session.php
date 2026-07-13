@@ -1,0 +1,4 @@
+<?php
+namespace App\Core;
+final class Session{public static function start():void{if(session_status()===PHP_SESSION_ACTIVE)return;session_set_cookie_params(['httponly'=>true,'secure'=>isset($_SERVER['HTTPS']),'samesite'=>'Lax','path'=>'/']);session_start();$_SESSION['_old_flash']=$_SESSION['_new_flash']??[];$_SESSION['_new_flash']=[];}public static function get(string $k,mixed $d=null):mixed{return $_SESSION[$k]??$d;}public static function put(string $k,mixed $v):void{$_SESSION[$k]=$v;}public static function flash(string $k,mixed $v):void{$_SESSION['_new_flash'][$k]=$v;}public static function oldFlash(string $k,mixed $d=null):mixed{return $_SESSION['_old_flash'][$k]??$d;}public static function regenerate():void{session_regenerate_id(true);}public static function destroy():void{$_SESSION=[];session_destroy();}}
+

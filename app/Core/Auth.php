@@ -1,0 +1,4 @@
+<?php
+namespace App\Core;use App\Models\User;
+final class Auth{private static ?array $user=null;public static function attempt(string $email,string $password):bool{$u=User::byEmail($email);if(!$u||!$u['is_active']||!password_verify($password,$u['password']))return false;Session::regenerate();Session::put('user_id',(int)$u['id']);self::$user=$u;return true;}public static function id():?int{return Session::get('user_id')?(int)Session::get('user_id'):null;}public static function check():bool{return self::id()!==null;}public static function user():?array{return self::$user??=(self::id()?User::find(self::id()):null);}public static function hasRole(string $r):bool{return in_array($r,User::roles(self::id()??0),true);}public static function logout():void{self::$user=null;Session::destroy();}}
+

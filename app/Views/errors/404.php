@@ -1,0 +1,1 @@
+<?php $title='Not Found';$content='<section class="error"><b>404</b><h1>Page not found.</h1><a class="btn" href="'.url().'">Return Home</a></section>';require BASE_PATH.'/app/Views/layouts/main.php';?>
