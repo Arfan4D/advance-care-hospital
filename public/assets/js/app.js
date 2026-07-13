@@ -1,2 +1,3 @@
-document.querySelectorAll('.videos button').forEach(button=>button.addEventListener('click',()=>alert('Patient video embedding will be connected in Phase 2.')));document.querySelector('.ai')?.addEventListener('click',()=>alert('The AI Healthcare Assistant will be developed after the hospital data modules.'));
-
+document.querySelector('.menu')?.addEventListener('click',()=>document.querySelector('header nav')?.classList.toggle('open'));
+document.querySelector('.ai')?.addEventListener('click',()=>alert('The AI Healthcare Assistant will be developed after the appointment data is ready.'));
+document.querySelectorAll('.form-tabs button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.form-tabs button').forEach(b=>b.classList.remove('active'));button.classList.add('active');document.querySelectorAll('.hospital-form').forEach(form=>form.classList.add('hidden'));document.getElementById(button.dataset.form)?.classList.remove('hidden');}));

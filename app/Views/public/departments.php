@@ -1,0 +1,2 @@
+<?php $heading='Medical Departments';$subheading='Find specialist teams, services and available doctors.';require __DIR__.'/_hero.php';?><section class="section"><div class="departments listing"><?php foreach($departments as$d):?><article><i><?=e($d['icon']?:'✚')?></i><h3><?=e($d['name'])?></h3><p><?=e($d['short_description'])?></p><a href="<?=url('department?id='.$d['id'])?>">Explore department →</a></article><?php endforeach;?></div></section>
+
