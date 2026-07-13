@@ -1,5 +1,5 @@
 <?php
-use App\Controllers\{AppointmentController,AuthController,DashboardController,HomeController,NotificationController,ProfileController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
+use App\Controllers\{AdminController,AppointmentController,AuthController,DashboardController,HomeController,NotificationController,ProfileController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
 $router->get('/',[HomeController::class,'index']);
 $router->get('/about',[PublicController::class,'about']);
 $router->get('/leadership',[PublicController::class,'leadership']);
@@ -34,4 +34,21 @@ $router->post('/appointment/reschedule',[AppointmentController::class,'reschedul
 $router->get('/notifications',[NotificationController::class,'index'],[AuthMiddleware::class]);
 $router->post('/notification/read',[NotificationController::class,'read'],[AuthMiddleware::class]);
 $router->post('/notifications/read-all',[NotificationController::class,'readAll'],[AuthMiddleware::class]);
-$router->get('/admin',[DashboardController::class,'admin'],[AdminMiddleware::class]);
+$router->get('/admin',[AdminController::class,'dashboard'],[AdminMiddleware::class]);
+$router->get('/admin/module',[AdminController::class,'module'],[AdminMiddleware::class]);
+$router->get('/admin/edit',[AdminController::class,'edit'],[AdminMiddleware::class]);
+$router->post('/admin/save',[AdminController::class,'save'],[AdminMiddleware::class]);
+$router->post('/admin/delete',[AdminController::class,'delete'],[AdminMiddleware::class]);
+$router->get('/admin/schedules',[AdminController::class,'schedules'],[AdminMiddleware::class]);
+$router->post('/admin/schedules',[AdminController::class,'saveSchedule'],[AdminMiddleware::class]);
+$router->get('/admin/appointments',[AdminController::class,'appointments'],[AdminMiddleware::class]);
+$router->post('/admin/appointment-status',[AdminController::class,'appointmentStatus'],[AdminMiddleware::class]);
+$router->get('/admin/patients',[AdminController::class,'patients'],[AdminMiddleware::class]);
+$router->post('/admin/patient-toggle',[AdminController::class,'patientToggle'],[AdminMiddleware::class]);
+$router->get('/admin/feedback',[AdminController::class,'feedback'],[AdminMiddleware::class]);
+$router->post('/admin/feedback-status',[AdminController::class,'feedbackStatus'],[AdminMiddleware::class]);
+$router->get('/admin/reports',[AdminController::class,'reports'],[AdminMiddleware::class]);
+$router->get('/admin/roles',[AdminController::class,'roles'],[AdminMiddleware::class]);
+$router->post('/admin/roles',[AdminController::class,'saveRole'],[AdminMiddleware::class]);
+$router->post('/admin/role-create',[AdminController::class,'createRole'],[AdminMiddleware::class]);
+$router->get('/admin/audits',[AdminController::class,'audits'],[AdminMiddleware::class]);
