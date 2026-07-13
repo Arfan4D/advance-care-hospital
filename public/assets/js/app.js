@@ -1,4 +1,20 @@
 document.querySelector('.menu')?.addEventListener('click',()=>document.querySelector('header nav')?.classList.toggle('open'));
-document.querySelector('.ai')?.addEventListener('click',()=>alert('The AI Healthcare Assistant will be developed after the appointment data is ready.'));
 document.querySelectorAll('.form-tabs button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.form-tabs button').forEach(b=>b.classList.remove('active'));button.classList.add('active');document.querySelectorAll('.hospital-form').forEach(form=>form.classList.add('hidden'));document.getElementById(button.dataset.form)?.classList.remove('hidden');}));
 const cancelDialog=document.getElementById('cancel-dialog');document.querySelector('[data-open-cancel]')?.addEventListener('click',()=>cancelDialog?.showModal());document.querySelector('[data-close-cancel]')?.addEventListener('click',()=>cancelDialog?.close());
+
+const chatApp=document.querySelector('.chat-app');
+if(chatApp){
+ const form=document.getElementById('ai-form'),input=document.getElementById('ai-text'),messages=document.getElementById('ai-messages');
+ const endpoint=chatApp.dataset.endpoint,base=endpoint.replace(/\/ai-assistant\/message$/,'');let language='en',busy=false;
+ const scroll=()=>{messages.scrollTop=messages.scrollHeight};scroll();
+ const linkUrl=url=>url?.startsWith('tel:')?url:`${base}/${String(url||'').replace(/^\//,'')}`;
+ const addMessage=(sender,text,extra={})=>{const article=document.createElement('article');article.className=`ai-message ${sender}${extra.emergency?' emergency':''}`;const bubble=document.createElement('div');bubble.className='bubble';bubble.textContent=text;article.appendChild(bubble);
+  if(extra.cards?.length){const cards=document.createElement('div');cards.className='ai-result-cards';extra.cards.forEach(card=>{const el=document.createElement('a');el.href=linkUrl(card.url);el.className=`ai-result-card ${card.kind||''}`;const title=document.createElement('b');title.textContent=card.title;const sub=document.createElement('span');sub.textContent=card.subtitle||'';el.append(title,sub);cards.appendChild(el);});article.appendChild(cards);}
+  if(extra.actions?.length){const actions=document.createElement('div');actions.className='ai-actions';extra.actions.forEach(action=>{const a=document.createElement('a');a.href=linkUrl(action.url);a.textContent=action.label;actions.appendChild(a);});article.appendChild(actions);}
+  if(extra.disclaimer){const note=document.createElement('small');note.className='ai-disclaimer';note.textContent=extra.disclaimer;article.appendChild(note);}messages.appendChild(article);scroll();return article;};
+ const send=async text=>{if(busy||!text.trim())return;busy=true;addMessage('user',text);input.value='';const typing=addMessage('assistant',language==='bn'?'উত্তর খুঁজছি…':'Checking verified hospital information…');typing.classList.add('typing');const data=new FormData(form);data.set('message',text);try{const response=await fetch(endpoint,{method:'POST',body:data,headers:{'X-Requested-With':'XMLHttpRequest'}});const result=await response.json();typing.remove();if(!response.ok)throw new Error(result.error||'Request failed');addMessage('assistant',result.reply,result);}catch(error){typing.remove();addMessage('assistant',language==='bn'?'সহকারী এখন উপলব্ধ নয়। সরাসরি হাসপাতালে যোগাযোগ করুন।':'The assistant is temporarily unavailable. Please contact the hospital directly.');}finally{busy=false;input.focus();}};
+ form.addEventListener('submit',event=>{event.preventDefault();send(input.value);});
+ input.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();form.requestSubmit();}});
+ document.querySelectorAll('.suggested-prompts button').forEach(button=>button.addEventListener('click',()=>send(button.dataset[language])));
+ document.querySelectorAll('.language-switch button').forEach(button=>button.addEventListener('click',()=>{language=button.dataset.lang;document.querySelectorAll('.language-switch button').forEach(b=>b.classList.toggle('active',b===button));input.placeholder=language==='bn'?'হাসপাতালের সেবা সম্পর্কে জিজ্ঞাসা করুন…':'Ask about hospital services…';}));
+}
