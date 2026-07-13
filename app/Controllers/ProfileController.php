@@ -1,0 +1,4 @@
+<?php
+namespace App\Controllers;use App\Core\{Auth,Request,Session,Validator,View};use App\Models\Patient;use PDOException;
+final class ProfileController{public function edit(Request$r):void{View::render('patient/profile',['title'=>'My Profile','profile'=>Patient::profile(Auth::id()),'errors'=>[]]);}public function update(Request$r):void{$d=$r->all();$v=new Validator();if(!$v->validate($d,['name'=>'required|min:2','phone'=>'required|min:7'])){View::render('patient/profile',['title'=>'My Profile','profile'=>array_merge(Patient::profile(Auth::id()),$d),'errors'=>$v->errors()]);return;}try{Patient::update(Auth::id(),$d);Session::flash('success','Your profile has been updated.');redirect('profile');}catch(PDOException$e){View::render('patient/profile',['title'=>'My Profile','profile'=>array_merge(Patient::profile(Auth::id()),$d),'errors'=>['phone'=>['This phone number may already be registered.']]]);}}}
+

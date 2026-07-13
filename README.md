@@ -1,4 +1,4 @@
-# Advance Care Specialized Hospital — Phases 1 and 2
+# Advance Care Specialized Hospital — Phases 1, 2 and 3
 
 ## Setup with XAMPP
 
@@ -7,7 +7,7 @@
 3. In `.env`, use `DB_PORT=3307` if your MySQL runs on 3307; otherwise use 3306.
 4. Start Apache and MySQL in XAMPP.
 5. Open phpMyAdmin and import `database/schema.sql` first.
-6. Import `database/phase2_migration.sql` into the same database.
+6. Import `database/phase2_migration.sql`, followed by `database/phase3_migration.sql`.
 7. Open a terminal in the project folder and run:
 
    `C:\xampp\php\php.exe database\create_admin.php admin@advancecare.com StrongPassword123!`
@@ -30,6 +30,39 @@
 - Consent-controlled YouTube/Facebook patient video reviews
 
 Phase 1 also includes PHP MVC routing, PDO configuration, responsive layouts, validation, authentication, password hashing, secure sessions, CSRF protection, roles, middleware, logging and error pages.
+
+## Phase 3 patient and appointment system
+
+- Patient registration and secure login/logout
+- Patient dashboard and profile management
+- Doctor search and filters
+- Weekly doctor schedules and selectable time slots
+- Appointment booking with transactional duplicate prevention
+- Appointment reference and confirmation page
+- Appointment history and status filters
+- Patient-owned cancellation and rescheduling
+- Slot release after cancellation
+- In-app appointment notifications and read status
+- Verification-code database foundation
+
+Account verification is disabled for local XAMPP development because no SMTP email or SMS provider is configured. The `verification_codes` table is ready for a future provider. Do not simulate sending verification messages in production.
+
+## Upgrade an existing Phase 2 database
+
+If Phase 1 and Phase 2 are already installed, import only:
+
+`database/phase3_migration.sql`
+
+Do not import `schema.sql` or `phase2_migration.sql` again.
+
+After importing, log in as a patient and test:
+
+- `/dashboard`
+- `/profile`
+- `/doctors`
+- `/book-appointment`
+- `/appointments`
+- `/notifications`
 
 ## Add a patient video review
 
