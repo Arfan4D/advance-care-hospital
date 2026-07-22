@@ -1,0 +1,2 @@
+<?php $heading='Hospital News and Updates';$subheading='Announcements, community events and service information.';require __DIR__.'/_hero.php';?><section class="section"><div class="news-grid listing"><?php foreach($articles as$a):?><article><span><?=e($a['category'])?> • <?=date('d M Y',strtotime($a['published_at']))?></span><h2><?=e($a['title'])?></h2><p><?=e($a['excerpt'])?></p><a href="<?=url('article?id='.$a['id'])?>">Read article →</a></article><?php endforeach;?></div></section>
+
