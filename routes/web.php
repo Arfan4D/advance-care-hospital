@@ -1,6 +1,7 @@
 <?php
-use App\Controllers\{AdminAiController,AdminController,AiController,AppointmentController,AuthController,DashboardController,HomeController,NotificationController,ProfileController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
+use App\Controllers\{AdminAiController,AdminBusinessController,AdminController,AiController,AppointmentController,AuthController,BusinessController,DashboardController,HealthController,HomeController,NotificationController,ProfileController,PublicController};use App\Middleware\{AdminMiddleware,AuthMiddleware,GuestMiddleware};
 $router->get('/',[HomeController::class,'index']);
+$router->get('/health',[HealthController::class,'index']);
 $router->get('/about',[PublicController::class,'about']);
 $router->get('/leadership',[PublicController::class,'leadership']);
 $router->get('/departments',[PublicController::class,'departments']);
@@ -18,6 +19,12 @@ $router->post('/contact',[PublicController::class,'sendContact']);
 $router->post('/feedback',[PublicController::class,'sendFeedback']);
 $router->get('/ai-assistant',[AiController::class,'chat']);
 $router->post('/ai-assistant/message',[AiController::class,'respond']);
+$router->get('/careers',[BusinessController::class,'careers']);
+$router->get('/career',[BusinessController::class,'job']);
+$router->post('/career/apply',[BusinessController::class,'applyJob']);
+$router->get('/campus-ambassador',[BusinessController::class,'ambassadors']);
+$router->post('/campus-ambassador/apply',[BusinessController::class,'applyAmbassador']);
+$router->get('/r',[BusinessController::class,'referral']);
 $router->get('/login',[AuthController::class,'loginForm'],[GuestMiddleware::class]);
 $router->post('/login',[AuthController::class,'login'],[GuestMiddleware::class]);
 $router->get('/register',[AuthController::class,'registerForm'],[GuestMiddleware::class]);
@@ -36,6 +43,9 @@ $router->post('/appointment/reschedule',[AppointmentController::class,'reschedul
 $router->get('/notifications',[NotificationController::class,'index'],[AuthMiddleware::class]);
 $router->post('/notification/read',[NotificationController::class,'read'],[AuthMiddleware::class]);
 $router->post('/notifications/read-all',[NotificationController::class,'readAll'],[AuthMiddleware::class]);
+$router->get('/affiliate',[BusinessController::class,'affiliate'],[AuthMiddleware::class]);
+$router->post('/affiliate',[BusinessController::class,'registerAffiliate'],[AuthMiddleware::class]);
+$router->get('/affiliate/dashboard',[BusinessController::class,'affiliateDashboard'],[AuthMiddleware::class]);
 $router->get('/admin',[AdminController::class,'dashboard'],[AdminMiddleware::class]);
 $router->get('/admin/module',[AdminController::class,'module'],[AdminMiddleware::class]);
 $router->get('/admin/edit',[AdminController::class,'edit'],[AdminMiddleware::class]);
@@ -60,3 +70,13 @@ $router->get('/admin/ai-symptoms',[AdminAiController::class,'symptoms'],[AdminMi
 $router->post('/admin/ai-symptoms',[AdminAiController::class,'saveSymptom'],[AdminMiddleware::class]);
 $router->get('/admin/ai-unanswered',[AdminAiController::class,'unanswered'],[AdminMiddleware::class]);
 $router->post('/admin/ai-unanswered',[AdminAiController::class,'resolve'],[AdminMiddleware::class]);
+$router->get('/admin/business-jobs',[AdminBusinessController::class,'jobs'],[AdminMiddleware::class]);
+$router->post('/admin/business-jobs',[AdminBusinessController::class,'saveJob'],[AdminMiddleware::class]);
+$router->get('/admin/business-applications',[AdminBusinessController::class,'applications'],[AdminMiddleware::class]);
+$router->post('/admin/business-application-status',[AdminBusinessController::class,'applicationStatus'],[AdminMiddleware::class]);
+$router->get('/admin/business-resume',[AdminBusinessController::class,'resume'],[AdminMiddleware::class]);
+$router->get('/admin/business-programs',[AdminBusinessController::class,'programs'],[AdminMiddleware::class]);
+$router->post('/admin/business-programs',[AdminBusinessController::class,'saveProgram'],[AdminMiddleware::class]);
+$router->get('/admin/business-affiliates',[AdminBusinessController::class,'affiliates'],[AdminMiddleware::class]);
+$router->post('/admin/business-affiliate-status',[AdminBusinessController::class,'affiliateStatus'],[AdminMiddleware::class]);
+$router->post('/admin/business-commission',[AdminBusinessController::class,'commission'],[AdminMiddleware::class]);
